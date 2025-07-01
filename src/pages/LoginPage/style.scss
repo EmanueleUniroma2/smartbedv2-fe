@@ -1,0 +1,16 @@
+.login-page {
+  margin-top: 60px;
+
+  h4 {
+    text-align: center;
+    color: #1976d2; // optional: make it match your theme!
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    max-width: 400px;
+    margin: 0 auto;
+  }
+}
