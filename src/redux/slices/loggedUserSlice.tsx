@@ -5,27 +5,36 @@ interface LoggedUserState {
   user: IUser | null;
 }
 
+// Load from localStorage if available
+const loadFromStorage = (): IUser | null => {
+  const saved = localStorage.getItem("loggedUser");
+  return saved ? JSON.parse(saved) : null;
+};
+
 const initialState: LoggedUserState = {
-  user: null,
+  user: loadFromStorage(),
 };
 
 const loggedUserSlice = createSlice({
-  name: "user",
+  name: "loggedUser",
   initialState,
   reducers: {
-    login: (state, action: PayloadAction<IUser>) => {
-      state.user = action.payload;
-    },
-    logout: (state) => {
-      state.user = null;
-    },
     updateUser: (state, action: PayloadAction<Partial<IUser>>) => {
       if (state.user) {
         state.user = { ...state.user, ...action.payload };
+        localStorage.setItem("loggedUser", JSON.stringify(state.user));
       }
+    },
+    setUserFromSelf: (state, action: PayloadAction<IUser>) => {
+      state.user = action.payload;
+      localStorage.setItem("loggedUser", JSON.stringify(action.payload));
+    },
+    logout: (state) => {
+      state.user = null;
+      localStorage.removeItem("loggedUser");
     },
   },
 });
 
-export const { login, logout, updateUser } = loggedUserSlice.actions;
+export const { updateUser, setUserFromSelf, logout } = loggedUserSlice.actions;
 export default loggedUserSlice.reducer;

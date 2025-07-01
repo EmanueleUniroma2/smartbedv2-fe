@@ -9,10 +9,17 @@ import {
 } from "@mui/material";
 import ApiService from "../../services/api/ApiService";
 import "./style.scss";
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "../../routes";
+import { useDispatch } from "react-redux";
+import { setUserFromSelf } from "../../redux/slices/loggedUserSlice";
+import { useAppDispatch } from "../../redux/hooks";
 
 const LoginPage: React.FC = () => {
-  const [username, setUsername] = useState("");
+  const navigate = useNavigate();
+  const dispatch = useAppDispatch();
   const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -23,10 +30,12 @@ const LoginPage: React.FC = () => {
 
     try {
       const data = await ApiService.SessionController.login(username, password);
-      console.log("Login successful:", data);
+      localStorage.setItem("sessionToken", data.token);
 
-      // Optional: Navigate or trigger authenticated state update
-      // localStorage.setItem("sessionToken", data.token) already handled in controller
+      const userData = await ApiService.UserController.getSelf();
+      dispatch(setUserFromSelf(userData));
+
+      navigate(ROUTES.DASHBOARD);
     } catch (err: any) {
       setError(err.message || "Login failed");
     } finally {

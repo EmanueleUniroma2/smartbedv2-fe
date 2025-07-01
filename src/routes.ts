@@ -10,6 +10,7 @@ export const ROUTES = {
   LOGIN: "/login",
   NOT_FOUND: "404",
   DASHBOARD: "/dashboard",
+  HISTORY: "/history",
   READING_PAGE: "/reading",
   NOT_FOUND_WILDCARD: "*",
 };
@@ -32,12 +33,12 @@ export const appRoutes: RouteConfig[] = [
   {
     path: ROUTES.DASHBOARD,
     component: DashBoardPage,
-    navGuardItems: ["authToken"],
+    navGuardItems: ["sessionToken"],
   },
   {
     path: ROUTES.READING_PAGE,
     component: ReadingPage,
-    //  navGuardItems: ["authToken"],
+    navGuardItems: ["sessionToken"],
   },
   {
     path: ROUTES.NOT_FOUND_WILDCARD,

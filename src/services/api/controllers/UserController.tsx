@@ -10,7 +10,12 @@ export const UserController = {
     });
     return res.json();
   },
-
+  getSelf: async () => {
+    const res = await fetchWithTimeoutAndAuth(`${API_ROUTES.USER}/self`, {
+      method: "GET",
+    });
+    return res.json();
+  },
   getAll: async () => {
     const res = await fetchWithTimeoutAndAuth(API_ROUTES.USER, {
       method: "GET",
